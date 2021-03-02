@@ -10,45 +10,6 @@
         <canvas id="mainCanvas"></canvas>
 
         <div id="interaction">
-            <p>3D Shapes:</p>
-            <div>
-                <button onclick="tetraSelect()">Tetrahedron</button>
-                <button onclick="cubeSelect()">Cube</button>
-                <button onclick="octaSelect()">Octahedron</button>
-                <button onclick="dodeSelect()">Dodecahedron</button>
-                <button onclick="icosaSelect()">Icosahedron</button>
-            </div>
-            <br>
-            <p>4D Shapes:</p>
-            <div>
-                <button onclick="hTetraSelect()">Pentachoron</button>
-                <button onclick="hypCubeSelect()">Hyper Cube</button>
-                <button onclick="hOctaSelect()">Hexadecachoron</button>
-                <button onclick="hDiamondSelect()">Hyper Diamond</button>
-                <button onclick="hDodeSelect()">Hexacosichoron</button>
-                <button onclick="hIcoSelect()">Hecatonicosichoron</button>
-            </div>
-            <br>
-            <p>3D Rotations:</p>
-            <div>
-                <button onclick="doRotYZ()">yz-plane (W)</button>
-                <button onclick="undoRotYZ()">yz-plane reverse (S)</button>
-                <button onclick="doRotXZ()">zx-plane (A)</button>
-                <button onclick="undoRotXZ()">zx-plane reverse (D)</button>
-                <button onclick="doRotXY()">xy-plane (E)</button>
-                <button onclick="undoRotXY()">xy-plane reverse (Q)</button>
-            </div>
-            <br>
-            <p>4D Rotations:</p>
-            <div>
-                <button onclick="doRotXW()">xw-plane (J)</button>
-                <button onclick="undoRotXW()">xw-plane reverse (L)</button>
-                <button onclick="doRotYW()">yw-plane (I)</button>
-                <button onclick="undoRotYW()">yw-plane reverse (K)</button>
-                <button onclick="doRotZW()">zw-plane (U)</button>
-                <button onclick="undoRotZW()">zw-plane reverse (O)</button>
-            </div>
-            <br>
             <p>Options:</p>
             <div>
                 <button id="perspectiveChange" onclick="perspectiveChange()">Perspective (P) ON</button>
@@ -58,16 +19,14 @@
         </div>
         <br>
         <div id="info">
-            <h3>Information on the Mathematics:</h3>
-            <p></p>
         </div>
 
         <script>
             scaleCanvas();
             const canvas = document.getElementById("mainCanvas");
             let ctx = canvas.getContext("2d");
-            render(coords);
-            canvas.addEventListener('mousemove', mouseMove, false);
+            // render(coords);
+            //canvas.addEventListener('mousemove', mouseMove, false);
         </script>
 
     </body>
