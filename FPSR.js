@@ -3,37 +3,66 @@ const pi = Math.PI;
 const rotAngle = pi/24;
 let lastMousePos = [0,0];
 const worldToCanvasScale = 1;
+const moveSpeed = 1;
+const rotSpeed = 1;
 
 
 //camera
-{
 let camera = {
-    xpos: 0,
-    ypos: 150,
-    zpos: 0,
+    position: [0,150,0],
     xunit: [1,0,0],
     yunit: [0,1,0],
     zunit: [0,0,1],
     eyeDist: 1
 }
 
+//Uses the camera's xunit to nudge the zunit to the right or left, gets new zunit, the calculates new xunit using z and y units.
+function rightwardCamRot(camera, magnitude) {
+    camera.zunit = vecUnit(vecAdd(vecScale(magnitude, camera.xunit), camera.zunit));
+    camera.xunit = vecUnit(vecCross([0,1,0], camera.zunit));
+}
 
+//Uses the camera's yunit to nudge the zunit to up or down, gets new zunit, the calculates new yunit using z and x units.
+function upwardCamRot(camera, magnitude) {
+    camera.zunit = vecUnit(vecAdd(vecScale(magnitude, camera.yunit), camera.zunit));
+    camera.yunit = vecCross(camera.zunit, camera.xunit);
+}
+
+//Uses the camera's zunit to move the camera forward or backward
+function forwardCamMov(camera, magnitude) {
+    camera.position = vecAdd(camera.position, vecScale(magnitude, camera.zunit));
+}
+
+//Uses the camera's xunit to move the camera right or left
+function rightwardCamMov(camera, magnitude) {
+    camera.position = vecAdd(camera.position, vecScale(magnitude, camera.xunit));
+}
 
 function showCamUnits(camera) {
     console.log(camera.xunit);
+    console.log(vecMag(camera.xunit));
     console.log(camera.yunit);
+    console.log(vecMag(camera.yunit));
     console.log(camera.zunit);
+    console.log(vecMag(camera.zunit));
 }
-}
+
 
 //world
-{
-const worldCoords = [[100,0,0],[100,0,100],[200,0,100],[200,0,0],[100,100,0],[100,100,100],[200,100,100],[200,100,0]];
-const worldLines = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+const object1 = {
+    coords = [[100,0,0],[100,0,100],[200,0,100],[200,0,0],[100,-100,0],[100,-100,100],[200,-100,100],[200,-100,0]],
+    lines = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
 }
 
+const object2 = {
+    coords = [[100,0,200],[100,0,300],[200,0,300],[200,0,200],[100,-100,200],[100,-100,300],[200,-100,300],[200,-100,200]],
+    lines = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
+}
+
+const world = [object1, object2];
+
+
 //Array and vector
-{
 //returns a copy of an array
 function arrCopy(arr){
     let hold = [];
@@ -124,10 +153,9 @@ function arrEqual(arr1, arr2) {
     return hold;
 }
 
-}
+
 
 //Sizing and canvas
-{
 //returns array with [innerHeight, innerWidth]
 function getViewSizes() {
     winHeight = window.innerHeight;
@@ -147,7 +175,7 @@ function windowResize() {
     render(coords)
 }
 window.addEventListener('resize', windowResize);
-}
+
 
 
 
@@ -312,56 +340,32 @@ function simulatedMouseMove(lastMousePos) {
 }
 
 //keypress resolve
-{
 function resolveKeyPress(e) {
-    if (e.keyCode == 69){
-        doRotXY();
-    }
-    else if (e.keyCode == 81){
-        undoRotXY();
-    }
-    else if (e.keyCode == 87){
-        doRotYZ();
+    if (e.keyCode == 87){
+        forwardCamMov(camera,moveSpeed);
     }
     else if (e.keyCode == 83){
-        undoRotYZ();
-    }
-    else if (e.keyCode == 65){
-        doRotXZ();
+        forwardCamMov(camera,-1*moveSpeed);
     }
     else if (e.keyCode == 68){
-        undoRotXZ();
+        rightwardCamMov(camera, moveSpeed);
     }
-    else if (e.keyCode == 74){
-        doRotXW();
+    else if (e.keyCode == 65){
+        rightwardCamMov(camera, -1*moveSpeed);
     }
     else if (e.keyCode == 76){
-        undoRotXW();
+        rightwardCamRot(camera, rotSpeed);
+    }
+    else if (e.keyCode == 74){
+        rightwardCamRot(camera, -1*rotSpeed);
     }
     else if (e.keyCode == 73){
-        doRotYW();
+        upwardCamRot(camera, rotSpeed);
     }
     else if (e.keyCode == 75){
-        undoRotYW();
+        upwardCamRot(camera, -1*rotSpeed);
     }
-    else if (e.keyCode == 85){
-        doRotZW();
-    }
-    else if (e.keyCode == 79){
-        undoRotZW();
-    }
-    else if (e.keyCode == 80){
-        perspectiveChange();
-    }
-    else if (e.keyCode == 88){
-        wPerspExagOnOff();
-    }
-    else if (e.keyCode == 77){
-        mouseFollowOnOff();
-    }
-
-    simulatedMouseMove(lastMousePos);
+    console.log(camera);
 }
 document.addEventListener('keydown', resolveKeyPress);
-}
 
