@@ -11,11 +11,6 @@
 
         <div id="interaction">
             <p>Options:</p>
-            <div>
-                <button id="perspectiveChange" onclick="perspectiveChange()">Perspective (P) ON</button>
-                <button id="wPerspExagOnOff" onclick="wPerspExagOnOff()">Exaggerate 4D Perspective (X) ON</button>
-                <button id="mouseFollowOnOff" onclick="mouseFollowOnOff()">Mouse Follow (M) ON</button>
-            </div>
         </div>
         <br>
         <div id="info">
@@ -25,8 +20,8 @@
             scaleCanvas();
             const canvas = document.getElementById("mainCanvas");
             let ctx = canvas.getContext("2d");
-            // render(coords);
-            //canvas.addEventListener('mousemove', mouseMove, false);
+            render(world);
+            canvas.addEventListener('mousemove', mouseMove, false);
         </script>
 
     </body>
