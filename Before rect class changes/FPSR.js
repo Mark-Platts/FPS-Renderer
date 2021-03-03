@@ -109,7 +109,7 @@ const object2 = {
     lines: [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]
 }
 
-const OLDworld = [object1, object2];
+const world = [object1, object2];
 
 class rectoid {
     constructor(position, width, height, depth) {
@@ -140,11 +140,9 @@ class rectoid {
     }
 }
 
-const rect1 = new rectoid([0,-50,100], 100, 50, 80);
-const rect2 = new rectoid([0,-50,200], 100, 50, 80);
-const rect3 = new rectoid([400,-100,100], 100, 100, 500);
+let testRect = new rectoid([0,0,0], 10, 20 ,30);
 
-const world = [rect1, rect2];
+const Nworld = [testRect];
 
 //Array and vector
 //returns a copy of an array
@@ -264,7 +262,7 @@ window.addEventListener('resize', windowResize);
 //Takes a camera and single coordinate, returns where coordinate appears on the canvas according to perspective
 //worldToCanvasScale makes things bigger or smaller on the canvas if necessary
 //eyeDist is distance from the center of the canvas to the eye
-function setPersp(camera, coord) {
+function NsetPersp(camera, coord) {
     const eyeDist = camera.eyeDist;
     const camCoord = coordToCam(camera, coord);
         let rastCoord = [];
@@ -273,17 +271,18 @@ function setPersp(camera, coord) {
         let z = vecDot(camCoord, camera.zunit);
         rastCoord.push(x*eyeDist/z);
         rastCoord.push(y*eyeDist/z);
-    return vecScale(worldToCanvasScale,rastCoord);
+    return rastCoord;
 }
 
 //Takes rect data and renders it to the canvas in perspective
-function render(world){
+function Nrender(world){
     const canCenX = document.getElementById("mainCanvas").width/2;
     const canCenY = document.getElementById("mainCanvas").height/2;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = "#FFFFFF";
     for (let i = 0; i < world.length; i++) {
         let coords = world[i].lineCoords();
+        //let finCoords = setPersp(camera, coords);
         for (let i = 0; i < coords.length; i++){
             const initialVertex = setPersp(camera, coords[i][0]);
             const finalVertex = setPersp(camera, coords[i][1]);
@@ -298,7 +297,7 @@ function render(world){
 //Takes a camera and coordinate, returns where coordinate appears on the canvas according to perspective
 //worldToCanvasScale makes things bigger or smaller on the canvas if necessary
 //eyeDist is distance from the center of the canvas to the eye
-function OLDsetPersp(camera, coords) {
+function setPersp(camera, coords) {
     let hold = [];
     const eyeDist = camera.eyeDist;
     for (let i = 0; i < coords.length; i++){
@@ -316,7 +315,7 @@ function OLDsetPersp(camera, coords) {
 }
 
 //Takes the coord and line data and renders them to the canvas
-function OLDrender(world){
+function render(world){
     const canCenX = document.getElementById("mainCanvas").width/2;
     const canCenY = document.getElementById("mainCanvas").height/2;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
